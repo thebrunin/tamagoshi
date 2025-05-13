@@ -16,6 +16,7 @@ body {
     margin-top: 100px;
     width: 600px;
     height: 600px;
+    max-width: 100vw;
     border-top-left-radius: 45%;
     border-top-right-radius: 45%;
     border-bottom-left-radius: 60%;
@@ -38,6 +39,7 @@ body {
     background-color: aliceblue;
     position: relative;
     height: 210px;
+    max-width: 90vw;
     border-radius: 30px;
 }
 
