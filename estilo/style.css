@@ -1,0 +1,94 @@
+
+@font-face {
+    font-family: 'bakso';
+    src: url(../fontes/BaksoSapi.otf);
+}
+body {
+    text-align: center;
+    justify-content: center;
+    font-family: 'bakso';
+}
+body {
+    background-color: aquamarine;
+}
+#base {
+    margin: auto;
+    margin-top: 100px;
+    width: 600px;
+    height: 600px;
+    border-top-left-radius: 45%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 60%;
+    border-bottom-right-radius: 60%;
+    border: 5px black solid;
+    background: rgb(9,87,121);
+    background: linear-gradient(90deg, rgba(9,87,121,1) 0%, rgba(0,212,255,1) 50%, rgba(9,87,121,1) 100%);
+}
+
+#titulo{
+    margin-top: 10%;
+    color: rgb(255,153,0);
+    text-shadow: 3px 3px 0px black;
+    text-transform: uppercase;
+    font-size: 46px;
+}
+
+#canva {
+    border: 8px black solid;
+    background-color: aliceblue;
+    position: relative;
+    height: 210px;
+    border-radius: 30px;
+}
+
+.botoes {
+    margin-top: 10%;
+    position: relative;
+}
+
+.botoes button{
+    margin: 10px;
+    border: 4px black solid;
+    background-color: rgb(255, 153, 0);
+    color: rgb(255,153,0);
+    border-radius: 50%;
+    position: absolute;
+    font-size: larger;
+}
+#a {
+    top: 20px;
+    left: 150px;
+}
+#start {
+    position: absolute;
+    top: 45px;
+    left: 160px;
+}
+#b {
+    top: 40px;
+    left: 270px;
+}
+#select {
+    position: absolute;
+    top: 65px;
+    left: 280px;
+}
+#c {
+    top: 20px;
+    right: 150px;
+}
+#cancel {
+    position: absolute;
+    top: 45px;
+    right: 150px;
+}
+
+#pet {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 100px;
+    background-color: black;
+    z-index: 2;
+}
+
