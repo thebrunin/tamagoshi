@@ -31,7 +31,7 @@ body {
     color: rgb(255,153,0);
     text-shadow: 3px 3px 0px black;
     text-transform: uppercase;
-    font-size: 46px;
+    font-size: 42px;
 }
 
 #canva {
@@ -45,44 +45,22 @@ body {
 
 .botoes {
     margin-top: 10%;
-    position: relative;
+    /* position: relative; */
 }
 
 .botoes button{
     margin: 10px;
     border: 4px black solid;
     background-color: rgb(255, 153, 0);
-    color: rgb(255,153,0);
+    color: rgb(14, 14, 13);
     border-radius: 50%;
-    position: absolute;
     font-size: larger;
+    min-width: 100px;
 }
-#a {
-    top: 20px;
-    left: 150px;
-}
-#start {
-    position: absolute;
-    top: 45px;
-    left: 160px;
-}
-#b {
-    top: 40px;
-    left: 270px;
-}
-#select {
-    position: absolute;
-    top: 65px;
-    left: 280px;
-}
-#c {
-    top: 20px;
-    right: 150px;
-}
-#cancel {
-    position: absolute;
-    top: 45px;
-    right: 150px;
+
+.topLine {
+    display: flex;
+    justify-content: space-around;
 }
 
 #pet {
@@ -92,5 +70,12 @@ body {
     left: 100px;
     background-color: black;
     z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+    /* Regras de estilo para telas com largura maior ou igual a 768px */
+    #titulo {
+        font-size: 28px;
+    }
 }
 
