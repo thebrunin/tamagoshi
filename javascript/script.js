@@ -1,7 +1,3 @@
-let a = document.getElementById("a");
-let b = document.getElementById("b");
-let c = document.getElementById("c");
-
 canva = new Canvas(200,400,document.getElementById('canva'));
 tamagotchi = new Tamagotchi(50,50,false,true,canva.conteudo.getContext('2d'));
 var px=120;
@@ -12,26 +8,27 @@ let altCanvas=200;
 let lagCanvas=400;
 let anima;
 
+const image = new Image(50, 35); // Using optional size for image
+// Load an image of intrinsic size 300x227 in CSS pixels
+image.src = "./assets/charmander.png";
+
 tamagotchi.exist.fillStyle = 'red';
 function criar(){
     
     tamagotchi.exist.clearRect(0,0,canva.lag,canva.alt);
-    tamagotchi.exist.fillRect(px, py, tamagotchi.alt, tamagotchi.lag);
-    tamagotchi.exist.clearRect(px+12, py+15, 5, 5);
-    tamagotchi.exist.clearRect(px+30, py+15, 5, 5);
-    tamagotchi.exist.clearRect(px+12, py+35, 22, 5);
-    //px+=andarX;
-            py+=andarY
-            px+=andarX;
-            if(tamagotchi.alt>50){      
-                var time = window.setInterval('emagrece()', 3000);
-                window.setTimeout(function() {
-                    clearInterval(time);
-                }, 3000);
-            }
-            if(px >= lagCanvas-tamagotchi.lag*2 || px == tamagotchi.lag){
-                andarX *= -1;
-            }
+    tamagotchi.exist.drawImage(image, px, py, tamagotchi.alt, tamagotchi.lag)
+    // tamagotchi.exist.fillRect(px, py, tamagotchi.alt, tamagotchi.lag);
+    // tamagotchi.exist.clearRect(px+12, py+15, 5, 5);
+    // tamagotchi.exist.clearRect(px+30, py+15, 5, 5);
+    // tamagotchi.exist.clearRect(px+12, py+35, 22, 5);
+
+    py+=andarY
+    px+=andarX;
+
+    if(px >= lagCanvas-tamagotchi.lag*2 || px == tamagotchi.lag){
+        andarX *= -1;
+    }
+
     anima=requestAnimationFrame(criar);
 }
 
