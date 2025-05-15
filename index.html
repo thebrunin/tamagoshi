@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="./estilo/style.css">
     
 </head>
-<body onload="criar()">
+<body>
     <div id="base">
-        <h1 id="titulo">TAMAGOTCHI</h1>
+        <h1 id="titulo">My Little Pet</h1>
         <canvas id="canva" width="400" height="200">
             
         </canvas>
@@ -25,20 +25,20 @@
         <div class="botoes">
             <div class="topLine">
                 <div>
-                    <button>
-                        options
+                    <button type="button" onclick="eat()">
+                        Eat
                     </button>
                 </div>
                 <div>
-                    <button>
-                        start
+                    <button type="button" onclick="sleep()">
+                        Sleep
                     </button>
                 </div>
             </div>
             <div>
                 <div>
-                    <button>
-                        change
+                    <button type="button" onclick="run()">
+                        Run
                     </button>
                 </div>
             </div>
