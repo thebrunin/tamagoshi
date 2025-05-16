@@ -21,6 +21,11 @@ let colunaSpriteFood = 0;
 //acoes
 let stop = false;
 let eating = false;
+let speaking = false;
+let phrasal = '';
+let pyPhrasalAdjust = 10;
+let maxLengthPhasal = 0;
+let phrasalIncrement = 0;
 //image
 const image = new Image(50, 35); // Using optional size for image
 // Load an image of intrinsic size 300x227 in CSS pixels
@@ -54,24 +59,10 @@ function criar(){
     let posicaoInicialY = linhaSprite * alturaSprite;
     tamagotchi.exist.clearRect(0,0,canva.lag,canva.alt);
     tamagotchi.exist.drawImage(cenarioImage, 0, 0, canva.lag, canva.alt);
-    tamagotchi.exist.drawImage(image, posicaoInicialX, posicaoInicialY, larguraSprite, alturaSprite, px, py, tamagotchi.alt, tamagotchi.lag)
-    
-    if(eating) {
-        let posicaoInicialX = colunaSpriteFood * tamSpriteFood;
-        let posicaoInicialY = linhaSpriteFood * tamSpriteFood;
-        tamagotchi.exist.drawImage(foodImage, posicaoInicialX, posicaoInicialY, tamSpriteFood, tamSpriteFood, px, py, tamagotchi.alt, tamagotchi.lag)
-        colunaSpriteFood++;
-        if (colunaSpriteFood > 2) {
-            colunaSpriteFood = 0;
-            linhaSpriteFood++;
-        }
-        if (linhaSpriteFood > 2) {
-            colunaSpriteFood = 0;
-            linhaSpriteFood = 0;
-            eating = false;
-        }
-    }
-    // tamagotchi.exist.fillRect(px, py, tamagotchi.alt, tamagotchi.lag);
+    tamagotchi.exist.drawImage(image, posicaoInicialX, posicaoInicialY, larguraSprite, alturaSprite, px, py, tamagotchi.alt, tamagotchi.lag);
+
+    eatAction();
+    speakAction();
 
     colunaSprite++;
 
@@ -102,6 +93,22 @@ function eat() {
     eating = true;
 }
 
+function sleepRunHandler() {
+    if(stop) {
+        run();        
+    } else {
+        sleep();
+    }
+}
+
+function speak() {
+    if(stop) {
+        run();
+    }
+    speaking = true;
+    maxLengthPhasal = getRandomInt(7) * 2;
+}
+
 function sleep(){
     linhaSprite = 7;
     stop = true;
@@ -118,5 +125,50 @@ function run(){
 function jump(){
     window.setInterval()
 }
-a.addEventListener('click', eat);
-b.addEventListener('click', jump);
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function eatAction() {
+    if(eating) {
+        let posicaoInicialX = colunaSpriteFood * tamSpriteFood;
+        let posicaoInicialY = linhaSpriteFood * tamSpriteFood;
+        tamagotchi.exist.drawImage(foodImage, posicaoInicialX, posicaoInicialY, tamSpriteFood, tamSpriteFood, px, py, tamagotchi.alt, tamagotchi.lag)
+        colunaSpriteFood++;
+        if (colunaSpriteFood > 2) {
+            colunaSpriteFood = 0;
+            linhaSpriteFood++;
+        }
+        if (linhaSpriteFood > 2) {
+            colunaSpriteFood = 0;
+            linhaSpriteFood = 0;
+            eating = false;
+        }
+    }
+}
+
+
+function speakAction() {
+    if(speaking) {
+        if(phrasalIncrement == maxLengthPhasal) {
+            speaking = false;
+            phrasal = "";
+            phrasalIncrement = 0;
+            maxLengthPhasal = 0;
+            pyPhrasalAdjust = 10;
+            return;
+        }
+
+        phrasal += "Au ";
+
+        tamagotchi.exist.fillStyle = "black";
+        tamagotchi.exist.fillRect(px - 3, (py - (pyPhrasalAdjust * 2) - 3), 105, (15 + pyPhrasalAdjust));
+        tamagotchi.exist.fillStyle = "white";
+        tamagotchi.exist.fillRect(px, (py - (pyPhrasalAdjust * 2)), 100, (10 + pyPhrasalAdjust));
+        tamagotchi.exist.fillStyle = "black";
+        tamagotchi.exist.fillText((phrasal + "..."), px, (py - pyPhrasalAdjust), 100);
+
+        phrasalIncrement++;
+    }
+}
