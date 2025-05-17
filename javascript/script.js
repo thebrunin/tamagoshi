@@ -22,10 +22,14 @@ let colunaSpriteFood = 0;
 let stop = false;
 let eating = false;
 let speaking = false;
+let hasPoop = false;
 let phrasal = '';
 let pyPhrasalAdjust = 10;
 let maxLengthPhasal = 0;
 let phrasalIncrement = 0;
+let eatCount = 0;
+let pxPoop;
+let pyPoop;
 //image
 const image = new Image(50, 35); // Using optional size for image
 // Load an image of intrinsic size 300x227 in CSS pixels
@@ -38,6 +42,10 @@ cenarioImage.src = "./assets/floresta.jpg";
 //imagem comida
 const foodImage = new Image();
 foodImage.src = "./assets/foods.png";
+
+//imagem comida
+const poopImage = new Image();
+poopImage.src = "./assets/poop.png";
 
 tamagotchi.exist.fillStyle = 'red';
 function criar(){
@@ -63,6 +71,7 @@ function criar(){
 
     eatAction();
     speakAction();
+    poop();
 
     colunaSprite++;
 
@@ -91,6 +100,20 @@ function emagrece() {
 
 function eat() {
     eating = true;
+    eatCount++;
+}
+
+function poop() {
+    if(eatCount >= 3) {
+        pxPoop = px;
+        pyPoop = py + 15;
+        eatCount = 0;
+        hasPoop = true;
+    }
+
+    if(hasPoop) {
+        tamagotchi.exist.drawImage(poopImage, pxPoop, pyPoop, 40, 40);
+    }
 }
 
 function sleepRunHandler() {
