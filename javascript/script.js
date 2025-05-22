@@ -22,14 +22,20 @@ let colunaSpriteFood = 0;
 let stop = false;
 let eating = false;
 let speaking = false;
-let hasPoop = false;
 let phrasal = '';
 let pyPhrasalAdjust = 10;
 let maxLengthPhasal = 0;
 let phrasalIncrement = 0;
-let eatCount = 0;
-let pxPoop;
-let pyPoop;
+
+let poopObj = getFromLocalStorage("poop");
+
+if (!poopObj) {
+    poopObj = {
+        eatCount: 0,
+        poopList: [],
+    }
+}
+
 //image
 const image = new Image(50, 35); // Using optional size for image
 // Load an image of intrinsic size 300x227 in CSS pixels
@@ -67,6 +73,7 @@ function criar(){
     let posicaoInicialY = linhaSprite * alturaSprite;
     tamagotchi.exist.clearRect(0,0,canva.lag,canva.alt);
     tamagotchi.exist.drawImage(cenarioImage, 0, 0, canva.lag, canva.alt);
+    
     tamagotchi.exist.drawImage(image, posicaoInicialX, posicaoInicialY, larguraSprite, alturaSprite, px, py, tamagotchi.alt, tamagotchi.lag);
 
     eatAction();
@@ -100,20 +107,26 @@ function emagrece() {
 
 function eat() {
     eating = true;
-    eatCount++;
+    poopObj.eatCount++;
 }
 
 function poop() {
-    if(eatCount >= 3) {
-        pxPoop = px;
-        pyPoop = py + 15;
-        eatCount = 0;
+    if(poopObj.eatCount >= 3) {
+        let newPoop = {};
+        newPoop.pxPoop = px;
+        newPoop.pyPoop = py + 15;
+
+        poopObj.eatCount = 0;
+        poopObj.poopList.push(newPoop);
         hasPoop = true;
+
+        saveOnLocalStorage("poop", poopObj);
     }
 
-    if(hasPoop) {
-        tamagotchi.exist.drawImage(poopImage, pxPoop, pyPoop, 40, 40);
-    }
+    poopObj.poopList.forEach(p => {
+        tamagotchi.exist.drawImage(poopImage, p.pxPoop, p.pyPoop, 40, 40);
+    })
+    
 }
 
 function sleepRunHandler() {
@@ -129,7 +142,7 @@ function speak() {
         run();
     }
     speaking = true;
-    maxLengthPhasal = getRandomInt(7) * 2;
+    maxLengthPhasal = getRandomInt(6) * 2;
 }
 
 function sleep(){
@@ -194,4 +207,16 @@ function speakAction() {
 
         phrasalIncrement++;
     }
+}
+
+function saveOnLocalStorage(key, obj) {
+    const stringJSON = JSON.stringify(obj);
+    localStorage.setItem(key, stringJSON);
+}
+
+function getFromLocalStorage(key) {
+    const stringJSON = localStorage.getItem(key);
+    const meuObjeto = JSON.parse(stringJSON);
+    console.log(meuObjeto);
+    return meuObjeto;
 }
