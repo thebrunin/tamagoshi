@@ -1,25 +1,34 @@
 canva = new Canvas(200,400,document.getElementById('canva'));
 tamagotchi = new Tamagotchi(50,50,false,true,canva.conteudo.getContext('2d'));
-var px=120;
-var py=120;
-let andarX = 10;
-let andarY = 0;
-let altCanvas=200;
-let lagCanvas=400;
+
+let pet = getFromLocalStorage("pet");
+if (!pet) {
+    pet = {
+        px: 120,
+        py: 120,
+        andarX: 10,
+        andarY: 0,
+        altCanvas: 200,
+        lagCanvas: 400,
+        linhaSprite: 1,
+        colunaSprite: 0,
+        stop: false
+    }
+}
+
 //sprite pet
 const alturaSprite = 37.4;
 const larguraSprite = 37.5;
-let linhaSprite = 1;
+
 const CORRENDO_DIREITA = 1;
 const CORRENDO_ESQUERDA = 3;
 const DORMINDO = 7;
-let colunaSprite = 0;
+
 //sprite food
 const tamSpriteFood = 75;
 let linhaSpriteFood = 0;
 let colunaSpriteFood = 0;
 //acoes
-let stop = false;
 let eating = false;
 let speaking = false;
 let phrasal = '';
@@ -56,44 +65,46 @@ poopImage.src = "./assets/poop.png";
 tamagotchi.exist.fillStyle = 'red';
 function criar(){
     //DELIMITA COLUNAS DA LINHA DORMINDO
-    if(linhaSprite == DORMINDO) {
-        if(colunaSprite > 1) {
-            colunaSprite = 0;
+    if(pet.linhaSprite == DORMINDO) {
+        if(pet.colunaSprite > 1) {
+            pet.colunaSprite = 0;
         }
     }
     //DELIMITA COLUNAS DAS LINHAS CORRENDO
-    if(linhaSprite == CORRENDO_DIREITA || linhaSprite == CORRENDO_ESQUERDA) {
-        if(colunaSprite > 3) {
-            colunaSprite = 0;
+    if(pet.linhaSprite == CORRENDO_DIREITA || pet.linhaSprite == CORRENDO_ESQUERDA) {
+        if(pet.colunaSprite > 3) {
+            pet.colunaSprite = 0;
         }
     }
     //px eixo x de onde se inicia meu sprite
-    let posicaoInicialX = colunaSprite * larguraSprite;
+    let posicaoInicialX = pet.colunaSprite * larguraSprite;
     //px eixo y de onde se inicia o sprite
-    let posicaoInicialY = linhaSprite * alturaSprite;
+    let posicaoInicialY = pet.linhaSprite * alturaSprite;
     tamagotchi.exist.clearRect(0,0,canva.lag,canva.alt);
     tamagotchi.exist.drawImage(cenarioImage, 0, 0, canva.lag, canva.alt);
-    
-    tamagotchi.exist.drawImage(image, posicaoInicialX, posicaoInicialY, larguraSprite, alturaSprite, px, py, tamagotchi.alt, tamagotchi.lag);
+
+    tamagotchi.exist.drawImage(image, posicaoInicialX, posicaoInicialY, larguraSprite, alturaSprite, pet.px, pet.py, tamagotchi.alt, tamagotchi.lag);
 
     eatAction();
     speakAction();
     poop();
 
-    colunaSprite++;
+    pet.colunaSprite++;
 
-    if (!stop) {
-        py+=andarY
-        px+=andarX;
+    if (!pet.stop) {
+        pet.py+=pet.andarY;
+        pet.px+=pet.andarX;
     }
 
-    if(px >= lagCanvas-(larguraSprite * 2) || px <= tamagotchi.lag){
-        andarX *= -1;
-        if (linhaSprite == CORRENDO_DIREITA)
-            linhaSprite = CORRENDO_ESQUERDA;
-        else if (linhaSprite == CORRENDO_ESQUERDA)
-            linhaSprite = CORRENDO_DIREITA;
+    if(pet.px >= pet.lagCanvas-(larguraSprite * 2) || pet.px <= tamagotchi.lag){
+        pet.andarX *= -1;
+        if (pet.linhaSprite == CORRENDO_DIREITA)
+            pet.linhaSprite = CORRENDO_ESQUERDA;
+        else if (pet.linhaSprite == CORRENDO_ESQUERDA)
+            pet.linhaSprite = CORRENDO_DIREITA;
     }
+
+    saveOnLocalStorage("pet", pet);
 }
 
 let anima = setInterval(()=> {
@@ -113,8 +124,8 @@ function eat() {
 function poop() {
     if(poopObj.eatCount >= 3) {
         let newPoop = {};
-        newPoop.pxPoop = px;
-        newPoop.pyPoop = py + 15;
+        newPoop.pxPoop = pet.px;
+        newPoop.pyPoop = pet.py + 15;
 
         poopObj.eatCount = 0;
         poopObj.poopList.push(newPoop);
@@ -130,7 +141,7 @@ function poop() {
 }
 
 function sleepRunHandler() {
-    if(stop) {
+    if(pet.stop) {
         run();        
     } else {
         sleep();
@@ -138,7 +149,7 @@ function sleepRunHandler() {
 }
 
 function speak() {
-    if(stop) {
+    if(pet.stop) {
         run();
     }
     speaking = true;
@@ -146,16 +157,16 @@ function speak() {
 }
 
 function sleep(){
-    linhaSprite = 7;
-    stop = true;
+    pet.linhaSprite = 7;
+    pet.stop = true;
 }
 
 function run(){
-    if (andarX > 0)
-        linhaSprite = 1;
+    if (pet.andarX > 0)
+        pet.linhaSprite = 1;
     else
-        linhaSprite = 3;
-    stop = false;
+        pet.linhaSprite = 3;
+    pet.stop = false;
 }
 
 function jump(){
@@ -170,7 +181,7 @@ function eatAction() {
     if(eating) {
         let posicaoInicialX = colunaSpriteFood * tamSpriteFood;
         let posicaoInicialY = linhaSpriteFood * tamSpriteFood;
-        tamagotchi.exist.drawImage(foodImage, posicaoInicialX, posicaoInicialY, tamSpriteFood, tamSpriteFood, px, py, tamagotchi.alt, tamagotchi.lag)
+        tamagotchi.exist.drawImage(foodImage, posicaoInicialX, posicaoInicialY, tamSpriteFood, tamSpriteFood, pet.px, pet.py, tamagotchi.alt, tamagotchi.lag)
         colunaSpriteFood++;
         if (colunaSpriteFood > 2) {
             colunaSpriteFood = 0;
@@ -199,11 +210,11 @@ function speakAction() {
         phrasal += "Au ";
 
         tamagotchi.exist.fillStyle = "black";
-        tamagotchi.exist.fillRect(px - 3, (py - (pyPhrasalAdjust * 2) - 3), 105, (15 + pyPhrasalAdjust));
+        tamagotchi.exist.fillRect(pet.px - 3, (pet.py - (pyPhrasalAdjust * 2) - 3), 105, (15 + pyPhrasalAdjust));
         tamagotchi.exist.fillStyle = "white";
-        tamagotchi.exist.fillRect(px, (py - (pyPhrasalAdjust * 2)), 100, (10 + pyPhrasalAdjust));
+        tamagotchi.exist.fillRect(pet.px, (pet.py - (pyPhrasalAdjust * 2)), 100, (10 + pyPhrasalAdjust));
         tamagotchi.exist.fillStyle = "black";
-        tamagotchi.exist.fillText((phrasal + "..."), px, (py - pyPhrasalAdjust), 100);
+        tamagotchi.exist.fillText((phrasal + "..."), pet.px, (pet.py - pyPhrasalAdjust), 100);
 
         phrasalIncrement++;
     }
