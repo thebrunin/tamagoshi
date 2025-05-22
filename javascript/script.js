@@ -40,6 +40,7 @@ let poopObj = getFromLocalStorage("poop");
 
 if (!poopObj) {
     poopObj = {
+        tam: 40,
         eatCount: 0,
         poopList: [],
     }
@@ -135,7 +136,7 @@ function poop() {
     }
 
     poopObj.poopList.forEach(p => {
-        tamagotchi.exist.drawImage(poopImage, p.pxPoop, p.pyPoop, 40, 40);
+        tamagotchi.exist.drawImage(poopImage, p.pxPoop, p.pyPoop, poopObj.tam, poopObj.tam);
     })
     
 }
@@ -230,4 +231,27 @@ function getFromLocalStorage(key) {
     const meuObjeto = JSON.parse(stringJSON);
     console.log(meuObjeto);
     return meuObjeto;
+}
+
+
+canva.conteudo.addEventListener('click', (e) => {
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    removePoop(x, y);
+})
+
+function removePoop(x, y) {
+    const indexToRemove = poopObj.poopList.filter(p => (((p.pxPoop <= x) && ((p.pxPoop + poopObj.tam) >= x)) 
+                        && ((p.pyPoop <= y) && ((p.pyPoop + poopObj.tam) >= y))
+                    ))
+                    .map(e => poopObj.poopList.indexOf(e));
+    
+    let offset = 0;
+    for (const index of indexToRemove) {
+        poopObj.poopList.splice(index + offset, 1);
+        offset--;
+    }
+
+    saveOnLocalStorage("poop", poopObj);  
 }
